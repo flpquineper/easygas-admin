@@ -49,7 +49,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await api.post('/admins/login', { email, password });
       const { token, admin: adminData } = response.data;
       setCookie(undefined, 'easygas.token', token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
-      api.defaults.headers['Authorization'] = `Bearer ${token}`;
       setAdmin(adminData);
       router.push('/admin/dashboard');
     } catch (err) {

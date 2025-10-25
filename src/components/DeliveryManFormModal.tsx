@@ -37,7 +37,7 @@ export function DeliveryManFormModal({ initialData, onClose, onSave }: ModalProp
         response = await api.patch(`/deliverymen/${initialData.id}`, payload);
       } else {
 
-        response = await api.post('/deliverymen', payload);
+        response = await api.post('/deliverymen/register', payload);
       }
 
       toast.success(`Entregador ${isEditing ? 'atualizado' : 'criado'} com sucesso!`);
