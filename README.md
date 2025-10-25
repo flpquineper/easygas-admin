@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # EasyGas ADM
 
 
