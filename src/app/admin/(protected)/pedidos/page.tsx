@@ -33,8 +33,6 @@ export default function GerenciarPedidosPage() {
     <div className="bg-white p-6 md:p-8 rounded-lg shadow-md">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6">Gerenciar Pedidos</h1>
 
-      {/* Futuramente, adicionaremos os botões de filtro por status aqui */}
-
       <div className="overflow-x-auto">
         <table className="min-w-full leading-normal">
           <thead>
@@ -49,9 +47,9 @@ export default function GerenciarPedidosPage() {
           <tbody>
             {orders.map(order => (
               <tr key={order.id} className="hover:bg-gray-50">
-                <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm font-semibold">#{order.id}</td>
-                <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{order.user.name}</td>
-                <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{new Date(order.orderDate).toLocaleDateString('pt-BR')}</td>
+                <td className="px-5 py-4 border-b text-gray-700 border-gray-200 bg-white text-sm font-semibold">#{order.id}</td>
+                <td className="px-5 py-4 border-b text-gray-700 border-gray-200 bg-white text-sm">{order.user.name}</td>
+                <td className="px-5 py-4 border-b text-gray-700 border-gray-200 bg-white text-sm">{new Date(order.orderDate).toLocaleDateString('pt-BR')}</td>
                 <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">
                   {/* O 'select' para alterar o status entrará aqui */}
                   <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-800">
