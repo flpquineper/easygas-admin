@@ -1,13 +1,6 @@
 import axios from 'axios';
-import { parseCookies } from 'nookies';
-
-const { 'easygas.token': token } = parseCookies();
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true
 });
-
-if (token) {
-  api.defaults.headers['Authorization'] = `Bearer ${token}`;
-}
