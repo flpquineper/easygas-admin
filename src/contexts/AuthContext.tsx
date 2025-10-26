@@ -2,9 +2,9 @@
 
 import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { api } from '@/services/api';
-import { parseCookies, setCookie, destroyCookie } from 'nookies';
 import { useRouter } from 'next/navigation';
 import type { Admin } from '@/types/admin'; 
+import { AxiosError } from 'axios';
 
 interface SignInCredentials {
   email: string;
@@ -15,7 +15,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   admin: Admin | null;
   signIn: (credentials: SignInCredentials) => Promise<void>;
-  signOut: () => void;
+  signOut: () => Promise<void>; // Mudado para async
   loading: boolean; 
 }
 
@@ -26,29 +26,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-
   useEffect(() => {
-    const { 'easygas.token': token } = parseCookies();
-
-    if (token) {
-      api.get('/admins/profile') 
-        .then(response => {
-          setAdmin(response.data);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-
-      setLoading(false);
-    }
+    setLoading(true);
+    api.get('/admins/profile') 
+      .then(response => {
+        setAdmin(response.data);
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 401) {
+          console.log("Admin não está logado.");
+        }
+        setAdmin(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []); 
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
       const response = await api.post('/admins/login', { email, password });
-      const { token, admin: adminData } = response.data;
-      setCookie(undefined, 'easygas.token', token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
+
+      const { admin: adminData } = response.data;
+      
       setAdmin(adminData);
       router.push('/admin/dashboard');
     } catch (err) {
@@ -57,18 +57,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  function signOut() {
-    destroyCookie(undefined, 'easygas.token');
-    delete api.defaults.headers['Authorization'];
-    setAdmin(null);
-    router.push('/admins/login');
+  async function signOut() {
+    try {
+      await api.post('/admins/logout'); 
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    } finally {
+      setAdmin(null);
+      router.push('/admins/login');
+    }
   }
 
   const isAuthenticated = !!admin;
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, admin, signIn, signOut, loading }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
