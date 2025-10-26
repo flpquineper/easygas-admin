@@ -5,6 +5,8 @@ import { api } from '@/services/api';
 import { StatCard } from '@/components/StatCard';
 import { HiOutlineClock, HiOutlineCheckCircle } from 'react-icons/hi2';
 import { toast } from 'react-toastify';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface OrderSummary {
   pending: number;
@@ -12,8 +14,16 @@ interface OrderSummary {
 }
 
 export default function DashboardPage() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [summary, setSummary] = useState<OrderSummary | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push('/admin/login');
+    }
+  }, [loading, isAuthenticated, router]);
 
   useEffect(() => {
     async function fetchSummary() {
