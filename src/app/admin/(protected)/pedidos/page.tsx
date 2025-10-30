@@ -5,17 +5,30 @@ import { toast } from 'react-toastify';
 import { api } from '@/services/api';
 import { Order } from '@/types/order';
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function GerenciarPedidosPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const statusFilter = searchParams.get('status') || '';
 
   useEffect(() => {
     async function fetchOrders() {
       setLoading(true);
       try {
         const response = await api.get('/orders/all');
-        setOrders(response.data);
+        let fetchedOrders: Order[] = response.data;
+
+        // Filtro pelo status vindo da URL (recebido / entregue)
+        if (statusFilter) {
+          fetchedOrders = fetchedOrders.filter(
+            order => order.status.statusName.toLowerCase() === statusFilter.toLowerCase()
+          );
+        }
+
+        setOrders(fetchedOrders);
       } catch {
         toast.error("Erro ao carregar a lista de pedidos.");
       } finally {
@@ -23,7 +36,15 @@ export default function GerenciarPedidosPage() {
       }
     }
     fetchOrders();
-  }, []);
+  }, [statusFilter]);
+
+  const handleFilterChange = (status: string) => {
+    if (status) {
+      router.push(`/admin/pedidos?status=${status}`);
+    } else {
+      router.push(`/admin/pedidos`);
+    }
+  };
 
   if (loading) {
     return <div>Carregando pedidos...</div>;
@@ -31,7 +52,23 @@ export default function GerenciarPedidosPage() {
 
   return (
     <div className="bg-white p-6 md:p-8 rounded-lg shadow-md">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Gerenciar Pedidos</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold text-gray-800">Gerenciar Pedidos</h1>
+
+        <div>
+          <label htmlFor="statusFilter" className="mr-2 font-medium text-gray-700">Filtrar por status:</label>
+          <select
+            id="statusFilter"
+            value={statusFilter}
+            onChange={(e) => handleFilterChange(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-1"
+          >
+            <option value="">Todos</option>
+            <option value="recebido">Recebido</option>
+            <option value="entregue">Entregue</option>
+          </select>
+        </div>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="min-w-full leading-normal">
@@ -51,8 +88,11 @@ export default function GerenciarPedidosPage() {
                 <td className="px-5 py-4 border-b text-gray-700 border-gray-200 bg-white text-sm">{order.user.name}</td>
                 <td className="px-5 py-4 border-b text-gray-700 border-gray-200 bg-white text-sm">{new Date(order.orderDate).toLocaleDateString('pt-BR')}</td>
                 <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">
-                  {/* O 'select' para alterar o status entrará aqui */}
-                  <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-800">
+                  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                    order.status.statusName === 'entregue'
+                      ? 'bg-green-200 text-green-800'
+                      : 'bg-yellow-200 text-yellow-800'
+                  }`}>
                     {order.status.statusName}
                   </span>
                 </td>
