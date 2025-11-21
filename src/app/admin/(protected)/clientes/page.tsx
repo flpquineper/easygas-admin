@@ -101,7 +101,6 @@ export default function GerenciarClientesPage() {
             </tr>
           </thead>
           <tbody>
-            {/* RENDERIZA A LISTA FILTRADA AO INVÉS DA COMPLETA */}
             {filteredClientes.length > 0 ? (
               filteredClientes.map((cliente) => (
                 <tr key={cliente.id} className="hover:bg-gray-50 text-gray-600">

@@ -46,7 +46,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-        <h3 className="text-lg font-semibold mb-4">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800">
           Editar Cliente: {user.name}
         </h3>
 
@@ -59,7 +59,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 text-gray-700"
             />
           </div>
           <div>
@@ -70,7 +70,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+              className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
           <div>
@@ -81,7 +81,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+              className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
           <div>
@@ -92,7 +92,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+              className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
           <div>
@@ -103,7 +103,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
               type="text"
               value={complementAddress}
               onChange={(e) => setComplementAddress(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+              className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
         </div>
@@ -112,7 +112,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
           <button
             onClick={onClose}
             disabled={isSubmitting}
-            className="py-2 px-4 rounded border"
+            className=" text-gray-700 py-2 px-4 rounded border"
           >
             Cancelar
           </button>
