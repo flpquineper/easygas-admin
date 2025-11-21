@@ -53,7 +53,7 @@ export default function GerenciarProdutosPage() {
           Gerenciar Produtos
         </h1>
         <Link
-          href="/admin/produtos/novo"
+          href="/admin/produtos/cadastro"
           className="bg-emerald-600 font-bold text-white py-2 px-4 rounded-lg hover:bg-emerald-700 transition-colors"
         >
           Novo Produto
