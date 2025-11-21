@@ -61,7 +61,7 @@ export default function GerenciarPedidosPage() {
             id="statusFilter"
             value={statusFilter}
             onChange={(e) => handleFilterChange(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-1"
+            className="border border-gray-300 text-gray-700 rounded-md px-3 py-1"
           >
             <option value="">Todos</option>
             <option value="recebido">Recebido</option>
